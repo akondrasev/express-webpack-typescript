@@ -1,6 +1,6 @@
-const path = require("path");
-const webpack = require('webpack');
-const HtmlWebPackPlugin = require("html-webpack-plugin");
+const path = require('path')
+const webpack = require('webpack')
+const HtmlWebPackPlugin = require('html-webpack-plugin')
 module.exports = {
     entry: {
         main: './src/index.js'
@@ -10,6 +10,7 @@ module.exports = {
         publicPath: '/',
         filename: '[name].js'
     },
+    mode: 'development',
     target: 'web',
     devtool: '#source-map',
     module: {
@@ -32,7 +33,7 @@ module.exports = {
             },
             {
                 test: /\.css$/,
-                use: ['style-loader', 'css-loader']
+                use: [ 'style-loader', 'css-loader' ]
             },
             {
                 test: /\.(png|svg|jpg|gif)$/,
@@ -44,7 +45,8 @@ module.exports = {
         new HtmlWebPackPlugin({
             template: "./src/html/index.html",
             filename: "./index.html",
-            excludeChunks: ['server']
-        })
+            excludeChunks: [ 'server' ]
+        }),
+        new webpack.NoEmitOnErrorsPlugin()
     ]
 }
