@@ -1,4 +1,4 @@
-import adder from '../adder'
+import adder from './adder'
 
 describe('Adder', () => {
     test('adds two numbers', () => {

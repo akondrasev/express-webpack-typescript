@@ -4,10 +4,13 @@ const HtmlWebPackPlugin = require('html-webpack-plugin');
 
 module.exports = {
     entry: {
-        main: ['webpack-hot-middleware/client?path=/__webpack_hmr&timeout=20000', './src/client/index.js']
+        main: [
+            'webpack-hot-middleware/client?path=/__webpack_hmr&timeout=20000',
+            './src/client/index.js'
+        ]
     },
     output: {
-        path: path.join(__dirname, 'dist'),
+        path: path.join(__dirname, 'dist/client'),
         publicPath: '/',
         filename: '[name].js'
     },

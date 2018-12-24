@@ -6,8 +6,7 @@
   "scripts": {
     "buildDev": "webpack --mode development --config webpack.server.config.js && webpack --mode development --config webpack.dev.config.js",
     "buildProd": "webpack --mode production --config webpack.server.config.js && webpack --mode production --config webpack.prod.config.js",
-    "start": "node ./dist/server.js",
-
+    "start": "node ./dist/server/server.js",
     "test": "jest",
     "coverage": "jest --coverage"
   },
@@ -21,7 +20,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "express": "^4.16.4"
+    "express": "^4.5.1"
   },
   "devDependencies": {
     "babel-core": "^6.26.3",
