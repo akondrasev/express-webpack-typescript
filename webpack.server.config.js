@@ -7,6 +7,7 @@ module.exports = (env, argv) => {
         './src/server/server-prod.js' :
         './src/server/server-dev.js';
     return ({
+        devtool: false,
         entry: {
             server: SERVER_PATH,
         },
