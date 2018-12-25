@@ -36,31 +36,6 @@ module.exports = (isProduction) => {
         );
     }
 
-    const rules = [
-        {
-            test: /\.js$/,
-            exclude: /node_modules/,
-            loader: "babel-loader",
-        },
-        {
-            test: /\.html$/,
-            use: [
-                {
-                    loader: "html-loader",
-                    options: {minimize: isProduction}
-                }
-            ]
-        },
-        {
-            test: /\.(png|svg|jpg|gif)$/,
-            use: isProduction ? ["url-loader"] : ['file-loader']
-        },
-        {
-            test: /\.css$/,
-            use: isProduction ? [MiniCssExtractPlugin.loader, 'css-loader'] : ['style-loader', 'css-loader']
-        },
-    ];
-
     const config = {
         entry: {
             main: mainEntries
@@ -74,9 +49,40 @@ module.exports = (isProduction) => {
         target: 'web',
         devtool: isProduction ? false : '#source-map',
         module: {
-            rules: rules
+            rules: [
+                {
+                    test: /\.js$/,
+                    exclude: /node_modules/,
+                    loader: "babel-loader",
+                },
+                {
+                    test: /\.tsx?$/,
+                    use: 'ts-loader',
+                    exclude: /node_modules/
+                },
+                {
+                    test: /\.html$/,
+                    use: [
+                        {
+                            loader: "html-loader",
+                            options: {minimize: isProduction}
+                        }
+                    ]
+                },
+                {
+                    test: /\.(png|svg|jpg|gif)$/,
+                    use: isProduction ? ["url-loader"] : ['file-loader']
+                },
+                {
+                    test: /\.css$/,
+                    use: isProduction ? [MiniCssExtractPlugin.loader, 'css-loader'] : ['style-loader', 'css-loader']
+                },
+            ]
         },
-        plugins: plugins
+        plugins: plugins,
+        resolve: {
+            extensions: [ '.tsx', '.ts', '.js' ]
+        }
     };
 
     if (isProduction) {
