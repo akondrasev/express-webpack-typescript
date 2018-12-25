@@ -10,15 +10,11 @@ const clientConfigResult = clientConfig(isProduction);
 const clientCompiler = webpack(clientConfigResult);
 const serverCompiler = webpack(serverDevConfig(isProduction));
 
-rimraf('/dist', function () {
+rimraf('./dist', function () {
     console.log('/dist removed');
 
     if (isProduction) {
-        clientCompiler.run((err, stats) => {
-            if (err) {
-                console.log(err);
-            }
-        });
+        clientCompiler.run();
     }
 
     serverCompiler.run();
