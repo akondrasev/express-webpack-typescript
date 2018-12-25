@@ -1,18 +1,25 @@
 const webpack = require("webpack");
-const devConfig = require("./webpack.dev.config");
-const prodConfig = require("./webpack.prod.config");
-const serverDevConfig = require("./webpack.server.dev.config");
-const serverProdConfig = require("./webpack.server.prod.config");
+const clientConfig = require("./webpack.config");
+const serverDevConfig = require("./webpack.server.config");
 const rimraf = require('rimraf');
+
+const isProduction = process.env.mode ? process.env.mode.trim() === "production" : false;
+
+const clientConfigResult = clientConfig(isProduction);
+
+const clientCompiler = webpack(clientConfigResult);
+const serverCompiler = webpack(serverDevConfig(isProduction));
 
 rimraf('/dist', function () {
     console.log('/dist removed');
+
+    if (isProduction) {
+        clientCompiler.run((err, stats) => {
+            if (err) {
+                console.log(err);
+            }
+        });
+    }
+
+    serverCompiler.run();
 });
-
-const mode = process.env.mode || "production";
-
-const clientCompiler = webpack(mode === "production" ? prodConfig : devConfig);
-const serverCompiler = webpack(mode === "production" ? serverProdConfig : serverDevConfig);
-
-clientCompiler.run();
-serverCompiler.run();

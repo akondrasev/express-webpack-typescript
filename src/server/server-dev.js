@@ -3,9 +3,11 @@ import express from 'express';
 import webpack from 'webpack';
 import webpackDevMiddleware from 'webpack-dev-middleware';
 import webpackHotMiddleware from 'webpack-hot-middleware';
-import config from '../../webpack.dev.config.js';
+import clientConfig from '../../webpack.config.js';
 
 import api from "./api/index";
+
+const config = clientConfig(false);
 
 const app = express(),
     CLIENT_DIR = `${__dirname}/../client`,
