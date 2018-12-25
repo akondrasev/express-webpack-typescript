@@ -5,7 +5,7 @@ module.exports = (isProduction) => {
     return {
         devtool: false,
         entry: {
-            server: isProduction ? './src/server/server-prod.js' : './src/server/server-dev.js',
+            server: isProduction ? './src/server/server-prod.ts' : './src/server/server-dev.ts',
         },
         output: {
             path: path.join(__dirname, 'dist/server'),
@@ -13,6 +13,18 @@ module.exports = (isProduction) => {
             filename: '[name].js'
         },
         target: 'node',
+        module: {
+            rules: [
+                {
+                    test: /\.tsx?$/,
+                    use: 'ts-loader',
+                    exclude: /node_modules/
+                }
+            ]
+        },
+        resolve: {
+            extensions: [ '.tsx', '.ts', '.js' ]
+        },
         mode: isProduction ? "production" : "development",
         node: {
             // Need this when working with express, otherwise the build fails
