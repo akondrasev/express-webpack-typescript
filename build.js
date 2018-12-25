@@ -6,7 +6,7 @@ const serverProdConfig = require("./webpack.server.prod.config");
 const rimraf = require('rimraf');
 
 rimraf('/dist', function () {
-    console.log('dist removed');
+    console.log('/dist removed');
 });
 
 const mode = process.env.mode || "production";

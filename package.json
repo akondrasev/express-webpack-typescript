@@ -7,8 +7,8 @@
     "start": "node ./dist/server/server.js",
     "test": "jest",
     "coverage": "jest --coverage",
-
-    "build": "set MODE=dev && node build.js"
+    "build": "set MODE=dev && node build.js",
+    "buildProd": "node build.js"
   },
   "jest": {
     "moduleNameMapper": {
@@ -20,7 +20,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "express": "^4.5.1"
+    "express": "^4.16.4"
   },
   "devDependencies": {
     "babel-core": "^6.26.3",

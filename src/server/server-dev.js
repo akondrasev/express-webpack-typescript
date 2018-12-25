@@ -5,11 +5,11 @@ import webpackDevMiddleware from 'webpack-dev-middleware';
 import webpackHotMiddleware from 'webpack-hot-middleware';
 import config from '../../webpack.dev.config.js';
 
-import users from "./api/users";
+import api from "./api/index";
 
 const app = express(),
-    DIST_DIR = __dirname,
-    HTML_FILE = path.join(DIST_DIR, 'index.html'),
+    CLIENT_DIR = `${__dirname}/../client`,
+    HTML_FILE = path.join(CLIENT_DIR, 'index.html'),
     compiler = webpack(config);
 
 app.use(webpackDevMiddleware(compiler, {
@@ -18,7 +18,7 @@ app.use(webpackDevMiddleware(compiler, {
 
 app.use(webpackHotMiddleware(compiler));
 
-app.use("/users", users);
+app.use("/api", api);
 
 app.get('/', (req, res, next) => {
     compiler.outputFileSystem.readFile(HTML_FILE, (err, result) => {

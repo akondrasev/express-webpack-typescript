@@ -1,11 +1,17 @@
 import path from 'path';
 import express from 'express';
+import api from "./api/index";
+
 
 const app = express(),
-    DIST_DIR = __dirname,
-    HTML_FILE = path.join(DIST_DIR, 'index.html');
+    CLIENT_DIR = `${__dirname}/../client`,
+    HTML_FILE = path.join(CLIENT_DIR, 'index.html');
 
-app.use(express.static(DIST_DIR));
+console.log(__dirname);
+
+app.use(express.static(CLIENT_DIR));
+
+app.use("/api", api);
 
 app.get('/', (req, res) => {
     res.sendFile(HTML_FILE);
