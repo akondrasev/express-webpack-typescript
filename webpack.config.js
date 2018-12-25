@@ -38,6 +38,11 @@ module.exports = (isProduction) => {
 
     const rules = [
         {
+            test: /\.js$/,
+            exclude: /node_modules/,
+            loader: "babel-loader",
+        },
+        {
             test: /\.html$/,
             use: [
                 {
