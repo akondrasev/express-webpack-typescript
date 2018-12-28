@@ -1,3 +1,5 @@
+const webpack = require("webpack");
+
 const path = require('path');
 const nodeExternals = require('webpack-node-externals');
 
@@ -5,7 +7,7 @@ module.exports = (isProduction) => {
     return {
         devtool: false,
         entry: {
-            server: isProduction ? './src/server/server-prod.ts' : './src/server/server-dev.ts',
+            server: './src/server/server.ts',
         },
         output: {
             path: path.join(__dirname, 'dist/server'),
@@ -31,6 +33,14 @@ module.exports = (isProduction) => {
             __dirname: false,   // if you don't put this is, __dirname
             __filename: false,  // and __filename return blank or /
         },
-        externals: [nodeExternals()] // Need this to avoid error when working with Express
+        externals: [nodeExternals()], // Need this to avoid error when working with Express,
+        plugins: [
+            new webpack.DefinePlugin({
+                    compile: {
+                        isProduction: isProduction
+                    }
+                }
+            )
+        ]
     };
 };

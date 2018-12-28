@@ -15,13 +15,11 @@ rimraf('./dist', function () {
 
     if (isProduction) {
         clientCompiler.run((err, stats) => {
-            if (err) {
-                console.log(err);
-            }
-
             console.log(stats.compilation.errors);
         });
     }
 
-    serverCompiler.run();
+    serverCompiler.run((err, stats) => {
+        console.log(stats.compilation.errors);
+    });
 });

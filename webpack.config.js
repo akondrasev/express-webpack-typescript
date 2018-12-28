@@ -10,7 +10,7 @@ const outputDir = `dist/client`;
 module.exports = (isProduction) => {
     console.log("isProduction: ", isProduction);
 
-    const mainEntries = ['./src/client/index.js'];
+    const mainEntries = ['./src/client/index'];
 
     if (!isProduction) {
         mainEntries.unshift('webpack-hot-middleware/client?path=/__webpack_hmr&timeout=20000');
@@ -52,11 +52,6 @@ module.exports = (isProduction) => {
                     test: /\.js$/,
                     exclude: /node_modules/,
                     loader: "babel-loader",
-                },
-                {
-                    test: /\.tsx?$/,
-                    use: ['ts-loader',/* 'angular2-template-loader', 'angular2-router-loader'*/],
-                    exclude: /node_modules/
                 },
                 {
                     test: /\.tsx?$/,

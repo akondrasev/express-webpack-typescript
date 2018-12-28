@@ -1,10 +1,5 @@
-import './polyfills';
-import logMessage from './js/logger';
-import './ts/index';
 import './css/style.css';
-
-logMessage('A very warm welcome to Expack!');
-
+import './polyfills';
 import './main';
 
 // Needed for Hot Module Replacement
