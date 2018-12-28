@@ -14,12 +14,12 @@ rimraf('./dist', function () {
     console.log('/dist removed');
 
     if (isProduction) {
-        clientCompiler.run((err) => {
-            if (err) {
-                console.log(err);
-            }
+        clientCompiler.run((err, stats) => {
+            console.log(stats.compilation.errors);
         });
     }
 
-    serverCompiler.run();
+    serverCompiler.run((err, stats) => {
+        console.log(stats.compilation.errors);
+    });
 });

@@ -10,13 +10,11 @@ const outputDir = `dist/client`;
 module.exports = (isProduction) => {
     console.log("isProduction: ", isProduction);
 
-    const mainEntries = [];
+    const mainEntries = ['./src/client/index'];
 
     if (!isProduction) {
-        mainEntries.push('webpack-hot-middleware/client?path=/__webpack_hmr&timeout=20000');
+        mainEntries.unshift('webpack-hot-middleware/client?path=/__webpack_hmr&timeout=20000');
     }
-
-    mainEntries.push('./src/client/index.js');
 
     const plugins = [
         new HtmlWebPackPlugin({
