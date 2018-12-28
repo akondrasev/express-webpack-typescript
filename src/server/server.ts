@@ -41,6 +41,8 @@ if (!compile.isProduction) {
     app.get('/', (req, res, next) => {
         res.sendFile(HTML_FILE);
     });
+
+    app.use(express.static(CLIENT_DIR));
 }
 
 app.use("/api", api);

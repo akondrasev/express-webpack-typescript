@@ -17,16 +17,16 @@ module.exports = (isProduction) => {
     }
 
     const plugins = [
-        new HtmlWebPackPlugin({
-            template: "./src/client/index.html",
-            filename: "./index.html"
-        }),
         new webpack.DefinePlugin({
                 compile: {
                     isProduction: isProduction
                 }
             }
-        )
+        ),
+        new HtmlWebPackPlugin({
+            template: "./src/client/index.html",
+            filename: "./index.html"
+        })
     ];
 
     if (isProduction) {
