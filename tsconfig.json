@@ -1,6 +1,5 @@
 {
   "compilerOptions": {
-    "outDir": "./dist/client",
     "noImplicitAny": true,
     "module": "es6",
     "target": "es6",
