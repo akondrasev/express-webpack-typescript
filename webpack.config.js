@@ -20,7 +20,13 @@ module.exports = (isProduction) => {
         new HtmlWebPackPlugin({
             template: "./src/client/index.html",
             filename: "./index.html"
-        })
+        }),
+        new webpack.DefinePlugin({
+                compile: {
+                    isProduction: isProduction
+                }
+            }
+        )
     ];
 
     if (isProduction) {
