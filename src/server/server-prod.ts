@@ -2,7 +2,6 @@ import path from 'path';
 import express from 'express';
 import api from "./api/index";
 
-
 const app = express(),
     CLIENT_DIR = `${__dirname}/../client`,
     HTML_FILE = path.join(CLIENT_DIR, 'index.html');
