@@ -5,7 +5,7 @@ const nodeExternals = require('webpack-node-externals');
 
 module.exports = (isProduction) => {
     return {
-        devtool: false,
+        devtool: isProduction ? false : '#source-map',
         entry: {
             server: './src/server/server.ts',
         },
