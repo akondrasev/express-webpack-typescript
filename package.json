@@ -11,6 +11,7 @@
     "buildProd": "set MODE=production && node %NODE_DEBUG_OPTION% build.js"
   },
   "jest": {
+    "preset": "ts-jest",
     "moduleNameMapper": {
       "\\.(css|less)$": "<rootDir>/__mocks__/styleMock.js",
       "\\.(gif|ttf|eot|svg)$": "<rootDir>/__mocks__/fileMock.js"
@@ -40,6 +41,7 @@
     "mini-css-extract-plugin": "^0.5.0",
     "optimize-css-assets-webpack-plugin": "^5.0.1",
     "style-loader": "^0.23.1",
+    "ts-jest": "^23.10.5",
     "ts-loader": "^5.3.2",
     "typescript": "^3.2.2",
     "uglifyjs-webpack-plugin": "^2.1.0",
