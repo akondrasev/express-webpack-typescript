@@ -1,11 +1,11 @@
-import path from 'path';
-import express from 'express';
-import webpack from 'webpack';
-import webpackDevMiddleware from 'webpack-dev-middleware';
-import webpackHotMiddleware from 'webpack-hot-middleware';
-import clientConfig from '../../webpack.config.js';
-import http from 'http';
-import socketIo from 'socket.io';
+import * as path from 'path';
+import * as express from 'express';
+import * as webpack from 'webpack';
+import * as webpackDevMiddleware from 'webpack-dev-middleware';
+import * as webpackHotMiddleware from 'webpack-hot-middleware';
+import * as clientConfig from '../../webpack.config.js';
+import * as http from 'http';
+import * as socketIo from 'socket.io';
 import api from "./api/index";
 
 declare let compile:any;
