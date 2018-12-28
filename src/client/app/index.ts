@@ -2,11 +2,17 @@ import * as angular from 'angular';
 import * as ngMaterial from 'angular-material';
 import '@uirouter/angularjs';
 import {ICompileProvider} from "angular";
+import viewComponents from "./components/index";
 
 
-angular.module("app", [ngMaterial, "ui-router"]).config(["$compileProvider", ($compileProvider:ICompileProvider) => {
-    $compileProvider.debugInfoEnabled(false);
+angular.module("app", [ngMaterial, "ui.router", viewComponents]).config(["$compileProvider", ($compileProvider: ICompileProvider) => {
+    // @ts-ignore
+    if (compile.isProduction) {
+        $compileProvider.debugInfoEnabled(false);
+    }
 }]).run([() => {
 
 }]);
+
+
 
