@@ -41,6 +41,7 @@
     "@types/webpack-dev-middleware": "^2.0.2",
     "@types/webpack-env": "^1.13.6",
     "@types/webpack-hot-middleware": "^2.16.4",
+    "angularjs-template-loader": "^0.1.1",
     "babel-core": "^6.26.3",
     "babel-loader": "^7.1.5",
     "babel-preset-env": "^1.7.0",

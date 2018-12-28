@@ -61,7 +61,7 @@ module.exports = (isProduction) => {
                 },
                 {
                     test: /\.tsx?$/,
-                    use: 'ts-loader',
+                    use: ['ts-loader', 'angularjs-template-loader'],
                     exclude: /node_modules/
                 },
                 {
