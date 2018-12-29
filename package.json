@@ -26,6 +26,7 @@
     "angular-animate": "^1.7.5",
     "angular-aria": "^1.7.5",
     "angular-material": "^1.1.11",
+    "angular-messages": "^1.7.5",
     "express": "^4.16.4",
     "socket.io": "^2.2.0",
     "socket.io-client": "^2.2.0"
