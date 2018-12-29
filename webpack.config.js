@@ -81,6 +81,10 @@ module.exports = (isProduction) => {
                     test: /\.css$/,
                     use: isProduction ? [MiniCssExtractPlugin.loader, 'css-loader'] : ['style-loader', 'css-loader']
                 },
+                {
+                    test: /\.scss$/,
+                    use: isProduction ? [MiniCssExtractPlugin.loader, "css-loader", "sass-loader"] : ["style-loader", "css-loader", "sass-loader"]
+                }
             ]
         },
         plugins: plugins,

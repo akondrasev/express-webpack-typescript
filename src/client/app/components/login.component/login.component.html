@@ -1,3 +1,38 @@
-<div class="login-component">
-    Login component content
+<div layout="row" layout-align="center" class="login-component">
+    <md-card flex-gt-sm="50" flex-gt-md="33" class="login-form">
+
+        <md-toolbar class="toolbar-login">
+            <div class="md-toolbar-tools">
+                <h2><span>Login Form</span></h2>
+            </div>
+        </md-toolbar>
+        <md-card-content>
+            <form name="loginForm">
+
+                <md-input-container class="md-block" flex-gt-sm>
+                    <label>Email</label>
+                    <input required name="email" ng-model="$ctrl.user.email" minlength="10" maxlength="100" ng-pattern="/^.+@.+\..+$/"/>
+                    <div ng-messages="!isObjectEmpty(loginForm.email.$error)" >
+                        <div ng-message-exp="['required', 'minlength', 'maxlength', 'pattern']">
+                            Your email must be between 10 and 100 characters
+                            long and look like an e-mail address.
+                        </div>
+                    </div>
+                </md-input-container>
+
+                <md-input-container class="md-block">
+                    <input required name="password" ng-model="$ctrl.user.password" type="password" placeholder="Enter Password" md-maxlength="16">
+
+                    <div ng-messages="!isObjectEmpty(loginForm.email.$error)">
+                        <div ng-message="required">Please enter your password.</div>
+                        <div ng-message="md-maxlength">Too long.</div>
+                    </div>
+                </md-input-container>
+
+                <md-button ng-disabled="!loginForm.$valid" class="md-raised md-primary">Log In</md-button>
+                <md-button class="md-raised">Sign Up</md-button>
+            </form>
+        </md-card-content>
+
+    </md-card>
 </div>

@@ -1,6 +1,6 @@
 import 'angular';
 import './app/index';
-import './css/style.css';
+import './style.scss';
 import * as io from 'socket.io-client';
 import Socket = SocketIOClient.Socket;
 
