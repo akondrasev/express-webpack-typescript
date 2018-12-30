@@ -6,8 +6,8 @@ import * as webpackHotMiddleware from 'webpack-hot-middleware';
 import * as clientConfig from '../../webpack.config.js';
 import * as https from 'https';
 import * as http from 'http';
-import * as socketIo from 'socket.io';
 import * as fs from 'fs';
+import * as socketIo from 'socket.io';
 import api from "./api/index";
 import {Request, Response} from "express-serve-static-core";
 
@@ -66,6 +66,13 @@ const httpsServer = https.createServer({
     cert: fs.readFileSync('server.cert')
 }, app);
 
+httpServer.listen(PORT);
+
+httpsServer.listen(443, () => {
+    console.log(`App listening to ${PORT}....`);
+    console.log('Press Ctrl+C to quit.');
+});
+
 const io = socketIo(httpsServer);
 
 io.on('connection', function (socket) {
@@ -74,11 +81,4 @@ io.on('connection', function (socket) {
     socket.on('disconnect', function () {
         console.log('user disconnected');
     });
-});
-
-httpServer.listen(PORT);
-
-httpsServer.listen(443, () => {
-    console.log(`App listening to ${PORT}....`);
-    console.log('Press Ctrl+C to quit.');
 });
