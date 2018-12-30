@@ -15,9 +15,11 @@ declare let compile: any;
 
 const config = clientConfig(false);
 
-const app = express(),
-    CLIENT_DIR = `${__dirname}/../client`,
-    HTML_FILE = path.join(CLIENT_DIR, 'index.html');
+const app = express();
+
+const clientAppRoute = "*";
+
+app.use("/api", api);
 
 if (!compile.isProduction) {
     const compiler = webpack(config as webpack.Configuration);
@@ -28,27 +30,33 @@ if (!compile.isProduction) {
 
     app.use(webpackHotMiddleware(compiler));
 
-    app.get('/', (req, res, next) => {
+    app.get(clientAppRoute, (req, res, next) => {
+        const filename = path.join(compiler.options.output.path,'index.html');
+
         // @ts-ignore
-        compiler.outputFileSystem.readFile(HTML_FILE, (err, result) => {
+        compiler.outputFileSystem.readFile(filename, (err, result) => {
             if (err) {
-                return next(err);
+                console.log("error reading file", filename);
+                res.end(`error reading file from ${filename}`);
+                return;
             }
 
             res.set('content-type', 'text/html');
             res.send(result);
             res.end();
-        })
+        });
+
     });
 } else {
-    app.get('/', (req, res, next) => {
-        res.sendFile(HTML_FILE);
-    });
+    const CLIENT_DIR = `${__dirname}/../client`,
+        HTML_FILE = path.join(CLIENT_DIR, 'index.html');
 
     app.use(express.static(CLIENT_DIR));
-}
 
-app.use("/api", api);
+    app.get(clientAppRoute, (req, res, next) => {
+        res.sendFile(HTML_FILE);
+    });
+}
 
 const PORT = process.env.PORT || 8080;
 

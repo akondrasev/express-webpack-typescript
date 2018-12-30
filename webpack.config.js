@@ -69,7 +69,7 @@ module.exports = (isProduction) => {
                     use: [
                         {
                             loader: "html-loader",
-                            options: {minimize: isProduction}
+                            // options: {minimize: isProduction}
                         }
                     ]
                 },

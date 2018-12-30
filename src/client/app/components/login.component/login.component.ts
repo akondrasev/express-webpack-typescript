@@ -1,7 +1,8 @@
 import * as angular from 'angular';
 import './login.component.scss';
-import {StateProvider, TransitionService, StateService} from "@uirouter/angularjs";
+import {StateProvider, StateService, TransitionService, Transition, UrlService} from "@uirouter/angularjs";
 import {IRootScopeService} from "angular";
+import IInjectorService = angular.auto.IInjectorService;
 
 const ngModule = angular.module("login", []).component("loginComponent", {
     templateUrl: './login.component.html',
@@ -14,26 +15,15 @@ const ngModule = angular.module("login", []).component("loginComponent", {
         url: '/login',
         component: 'loginComponent'
     });
-}]).run(["$rootScope", "$state", ($rootScope: IRootScopeService, $state: StateService) => {
-    $state.go('login');
+}]).run(["$rootScope", "$state", "$transitions", "$urlService", ($rootScope: IRootScopeService, $state: StateService, $transitions: TransitionService, $urlService: UrlService) => {
+    $urlService.rules.otherwise("/login");
 
-    $rootScope.$on('$stateChangeStart', function (e, toState, toParams, fromState, fromParams) {
-
-        const isLogin = toState.name === "login";
-        if (isLogin) {
+    $transitions.onStart({from: "*", to: "*"}, (transition: Transition) => {
+        if (transition.to().name === "login") {
             return;
         }
 
-        $state.go('login');
-
-        // now, redirect only not authenticated
-
-        // var userInfo = authenticationSvc.getUserInfo();
-
-        // if(userInfo.authenticated === false) {
-        //     e.preventDefault(); // stop current execution
-        //     $state.go('login'); // go to login
-        // }
+        transition.redirect($state.target("login"));
     });
 }]);
 
