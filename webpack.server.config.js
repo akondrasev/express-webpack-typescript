@@ -1,4 +1,5 @@
 const webpack = require("webpack");
+const CopyWebpackPlugin = require('copy-webpack-plugin');
 
 const path = require('path');
 const nodeExternals = require('webpack-node-externals');
@@ -40,7 +41,8 @@ module.exports = (isProduction) => {
                         isProduction: isProduction
                     }
                 }
-            )
+            ),
+            new CopyWebpackPlugin(['./server.cert', './server.key'])
         ]
     };
 };

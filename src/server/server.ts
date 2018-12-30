@@ -4,11 +4,14 @@ import * as webpack from 'webpack';
 import * as webpackDevMiddleware from 'webpack-dev-middleware';
 import * as webpackHotMiddleware from 'webpack-hot-middleware';
 import * as clientConfig from '../../webpack.config.js';
+import * as https from 'https';
 import * as http from 'http';
 import * as socketIo from 'socket.io';
+import * as fs from 'fs';
 import api from "./api/index";
+import {Request, Response} from "express-serve-static-core";
 
-declare let compile:any;
+declare let compile: any;
 
 const config = clientConfig(false);
 
@@ -49,18 +52,33 @@ app.use("/api", api);
 
 const PORT = process.env.PORT || 8080;
 
-const server = new http.Server(app);
-const io = socketIo(server);
+const httpApp = express();
+const httpServer = new http.Server(httpApp);
 
-io.on('connection', function(socket){
+httpApp.get('*', function (req: Request, res: Response) {
+    const url = `https://${req.hostname}${req.url}`;
+    console.log("redirect to: ", url);
+    res.redirect(url);
+});
+
+const httpsServer = https.createServer({
+    key: fs.readFileSync('server.key'),
+    cert: fs.readFileSync('server.cert')
+}, app);
+
+const io = socketIo(httpsServer);
+
+io.on('connection', function (socket) {
     console.log('a user connected');
 
-    socket.on('disconnect', function(){
+    socket.on('disconnect', function () {
         console.log('user disconnected');
     });
 });
 
-server.listen(PORT, () => {
+httpServer.listen(PORT);
+
+httpsServer.listen(443, () => {
     console.log(`App listening to ${PORT}....`);
     console.log('Press Ctrl+C to quit.');
 });
