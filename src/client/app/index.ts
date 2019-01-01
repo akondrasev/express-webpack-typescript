@@ -13,7 +13,7 @@ const socket: Socket = io({
     secure: true
 });
 
-const requires:Array<string> = [
+const requires: Array<string> = [
     ngMaterial,
     "ui.router",
     viewComponents,
@@ -21,7 +21,8 @@ const requires:Array<string> = [
     services
 ];
 
-angular.module("app", requires).config(["$compileProvider", "$locationProvider", ($compileProvider: ICompileProvider, $locationProvider: ILocationProvider) => {
+angular.module("app", requires).config(["$compileProvider", "$locationProvider", "$mdThemingProvider", ($compileProvider: ICompileProvider, $locationProvider: ILocationProvider, $mdThemingProvider: angular.material.IThemingProvider) => {
+
     // @ts-ignore
     if (compile.isProduction) {
         $compileProvider.debugInfoEnabled(false);
@@ -29,7 +30,11 @@ angular.module("app", requires).config(["$compileProvider", "$locationProvider",
 
     $locationProvider.hashPrefix("");
     $locationProvider.html5Mode(true);
-}]).run([() => {
+
+    $mdThemingProvider.theme('default')
+        .primaryPalette('teal')
+        .accentPalette('orange');
+}]).run(["$mdTheming", ($mdTheming: angular.material.IThemingService) => {
     socket.connect();
 }]);
 
