@@ -21,6 +21,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "cookieconsent": "^3.1.0",
     "express": "^4.16.4"
   },
   "devDependencies": {
