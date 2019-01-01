@@ -8,9 +8,17 @@ import * as https from 'https';
 import * as http from 'http';
 import * as fs from 'fs';
 import * as socketIo from 'socket.io';
-import * as cookieParser from 'cookie-parser';
 import api from "./api/index";
 import {Request, Response} from "express-serve-static-core";
+import * as session from 'express-session';
+import * as bodyParser from "body-parser";
+
+const MongoDBStore = require('connect-mongodb-session')(session);
+
+const store = new MongoDBStore({
+    uri: 'mongodb://localhost:27017/app',
+    collection: 'sessions'
+});
 
 declare let compile: any;
 
@@ -20,7 +28,21 @@ const app = express();
 
 const clientAppRoute = "*";
 
-app.use(cookieParser());
+app.use(session({
+    secret: 'grabAndGo',
+    cookie: {
+        maxAge: 1000 * 60 * 60 * 24 * 7 // 1 week
+    },
+    store: store,
+    resave: false,
+    saveUninitialized: false
+}));
+
+// parse application/x-www-form-urlencoded
+app.use(bodyParser.urlencoded({extended: false}));
+
+// parse application/json
+app.use(bodyParser.json());
 
 app.use("/api", api);
 
@@ -34,7 +56,7 @@ if (!compile.isProduction) {
     app.use(webpackHotMiddleware(compiler));
 
     app.get(clientAppRoute, (req, res, next) => {
-        const filename = path.join(compiler.options.output.path,'index.html');
+        const filename = path.join(compiler.options.output.path, 'index.html');
 
         // @ts-ignore
         compiler.outputFileSystem.readFile(filename, (err, result) => {

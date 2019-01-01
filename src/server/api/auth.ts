@@ -3,18 +3,25 @@ import * as express from "express";
 const router = express.Router({mergeParams: true});
 
 router.route("/login").post((req, res, next) => {
-    res.cookie("session", "some-token");
-    res.sendStatus(204);
-}).get((req, res, next) => {
-    if (!req.cookies) {
-        res.sendStatus(401);
+    console.log("req.sessionID: ", req.sessionID);
+
+    if (req.session.user) {
+        res.sendStatus(204);
         return;
     }
 
-    const sessionToken = req.cookies["session"];//TODO search for session and close it
+    req.session.regenerate(() => {
+        req.session.user = {
+            email: req.body.email
+        };
 
-    if (sessionToken) {
         res.sendStatus(204);
+    });
+}).get((req, res, next) => {
+    if (req.session.user) {
+        req.session.reload(() => {
+            res.sendStatus(204);
+        });
     } else {
         res.sendStatus(401);
     }
@@ -22,9 +29,10 @@ router.route("/login").post((req, res, next) => {
 
 router.route("/logout")
     .post((req, res, next) => {
-        const sessionToken = req.cookies["session"];//TODO search for session and close it
-        res.clearCookie("session");
-        res.sendStatus(204);
+        req.session.destroy(() => {
+            res.clearCookie('connect.sid');
+            res.sendStatus(204);
+        });
     });
 
 export default router;
