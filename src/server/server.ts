@@ -58,7 +58,7 @@ if (!compile.isProduction) {
     });
 }
 
-const PORT = process.env.PORT || 8080;
+const PORT = process.env.PORT || 80;
 
 const httpApp = express();
 const httpServer = new http.Server(httpApp);
@@ -77,7 +77,7 @@ const httpsServer = https.createServer({
 httpServer.listen(PORT);
 
 httpsServer.listen(443, () => {
-    console.log(`App listening to ${PORT}....`);
+    console.log(`App listening to ${443}....`);
     console.log('Press Ctrl+C to quit.');
 });
 
