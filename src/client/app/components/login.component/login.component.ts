@@ -42,10 +42,6 @@ const ngModule = angular.module("login", []).component("loginComponent", {
             }).catch(() => {
                 redirected = true;
                 resolve($state.target("login"));
-
-                transition.promise.finally(() => {
-                    redirected = false;
-                });
             });
         });
     });
@@ -58,6 +54,10 @@ const ngModule = angular.module("login", []).component("loginComponent", {
                 resolve();
             });
         });
+    });
+
+    $transitions.onSuccess({to: "login"}, () => {
+        redirected = false;
     });
 }]);
 
