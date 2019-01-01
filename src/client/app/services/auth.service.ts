@@ -1,45 +1,26 @@
 import * as angular from 'angular';
-import {IQService, ITimeoutService} from "angular";
+import {IHttpService} from "angular";
 
 const ngModule = angular.module("auth", []);
-const storageKey = "user";
-
-interface IUser {
-    email:string,
-    password:string
-}
 
 export class AuthService {
-    static $inject:Array<string> = ["$q", "$timeout"];
+    static $inject:Array<string> = ["$http"];
 
-    private user:IUser = null;
-
-    constructor(private $q:IQService, private $timeout: ITimeoutService) {
-        this.user = JSON.parse(localStorage.getItem(storageKey));
+    constructor(private $http: IHttpService) {
     }
 
     isAuthorized() {
-        return this.user !== null;
+        return this.$http.get(`/api/auth/login`);
     }
 
     login(email:string, password:string) {
-        return this.$q((resolve, reject) => {
-            this.$timeout(() => {
-                this.user = {email: email, password: password};
-
-                localStorage.setItem(storageKey, JSON.stringify(this.user));
-
-                resolve();
-            }, 250);
+        return this.$http.post(`/api/auth/login`, {
+            email, password
         });
     }
 
     logout() {
-        return this.$q((resolve, reject) => {
-            localStorage.removeItem(storageKey);
-            this.user = null;
-            resolve();
-        });
+        return this.$http.post(`/api/auth/logout`, null);
     }
 
 }

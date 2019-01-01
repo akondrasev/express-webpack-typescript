@@ -1,6 +1,6 @@
 import * as angular from 'angular';
 import './login.component.scss';
-import {StateProvider, StateService, TransitionService, Transition, UrlService} from "@uirouter/angularjs";
+import {StateProvider, StateService, TransitionService, Transition, UrlService, HookResult} from "@uirouter/angularjs";
 import {IRootScopeService} from "angular";
 import {AuthService} from "../../services/auth.service";
 
@@ -33,18 +33,31 @@ const ngModule = angular.module("login", []).component("loginComponent", {
 }]).run(["$rootScope", "$state", "$transitions", "$urlService", "authService", ($rootScope: IRootScopeService, $state: StateService, $transitions: TransitionService, $urlService: UrlService, authService: AuthService) => {
     $urlService.rules.otherwise("/chat");
 
-    $transitions.onBefore({to: "*"}, (transition: Transition) => {
-        if (transition.to().name === "login" && !authService.isAuthorized()) {
-            return;
-        }
+    let redirected = false;
 
-        if (authService.isAuthorized() && transition.to().name === "login") {
-            return $state.target("chat");
-        }
+    $transitions.onBefore({to: (state) => state.name !== "login"}, (transition: Transition):HookResult => {
+        return new Promise((resolve, reject) => {
+            authService.isAuthorized().then(() => {
+                resolve();
+            }).catch(() => {
+                redirected = true;
+                resolve($state.target("login"));
 
-        if (!authService.isAuthorized()) {
-            return $state.target("login");
-        }
+                transition.promise.finally(() => {
+                    redirected = false;
+                });
+            });
+        });
+    });
+
+    $transitions.onBefore({to: (state) => state.name === "login" && !redirected}, (transition: Transition):HookResult => {
+        return new Promise((resolve) => {
+            authService.isAuthorized().then(() => {
+                resolve($state.target("chat"));
+            }).catch(() => {
+                resolve();
+            });
+        });
     });
 }]);
 

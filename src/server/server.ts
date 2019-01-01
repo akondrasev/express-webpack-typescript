@@ -8,6 +8,7 @@ import * as https from 'https';
 import * as http from 'http';
 import * as fs from 'fs';
 import * as socketIo from 'socket.io';
+import * as cookieParser from 'cookie-parser';
 import api from "./api/index";
 import {Request, Response} from "express-serve-static-core";
 
@@ -18,6 +19,8 @@ const config = clientConfig(false);
 const app = express();
 
 const clientAppRoute = "*";
+
+app.use(cookieParser());
 
 app.use("/api", api);
 
