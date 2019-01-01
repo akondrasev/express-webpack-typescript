@@ -30,7 +30,8 @@
     "cookie-parser": "^1.4.3",
     "express": "^4.16.4",
     "socket.io": "^2.2.0",
-    "socket.io-client": "^2.2.0"
+    "socket.io-client": "^2.2.0",
+    "cookieconsent": "^3.1.0"
   },
   "devDependencies": {
     "@types/angular": "^1.6.53",
