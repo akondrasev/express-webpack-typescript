@@ -34,7 +34,7 @@ angular.module("app", requires).config(["$compileProvider", "$locationProvider",
     $mdThemingProvider.theme('default')
         .primaryPalette('teal')
         .accentPalette('orange');
-}]).run(["$mdTheming", ($mdTheming: angular.material.IThemingService) => {
+}]).run([() => {
     socket.connect();
 }]);
 
