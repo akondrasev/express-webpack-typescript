@@ -5,7 +5,6 @@ import webpackDevMiddleware from 'webpack-dev-middleware';
 import webpackHotMiddleware from 'webpack-hot-middleware';
 import clientConfig from '../../webpack.config.js';
 import http from 'http';
-import socketIo from 'socket.io';
 import api from "./api/index";
 
 declare let compile:any;
@@ -48,15 +47,6 @@ app.use("/api", api);
 const PORT = process.env.PORT || 8080;
 
 const server = new http.Server(app);
-const io = socketIo(server);
-
-io.on('connection', function(socket){
-    console.log('a user connected');
-
-    socket.on('disconnect', function(){
-        console.log('user disconnected');
-    });
-});
 
 server.listen(PORT, () => {
     console.log(`App listening to ${PORT}....`);
