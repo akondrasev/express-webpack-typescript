@@ -18,7 +18,10 @@
             </ul>
         </div>
         <div>
-            <input/>
+            <form name="messageForm" ng-submit="$ctrl.submitMessage();">
+                <input name="message" ng-model="$ctrl.message"/>
+            </form>
+
         </div>
     </div>
 

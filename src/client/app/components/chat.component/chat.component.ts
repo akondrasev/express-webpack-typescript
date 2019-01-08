@@ -6,6 +6,8 @@ import {AuthService} from "../../services/auth.service";
 class ChatComponent {
     static $inject: Array<string> = ["authService", "$state"];
 
+    private message:string = "";
+
     constructor(private authService: AuthService, private $state: StateService) {
     }
 
@@ -13,6 +15,10 @@ class ChatComponent {
         this.authService.logout().then(() => {
             this.$state.go("login");
         });
+    }
+
+    submitMessage() {
+        this.message = "";
     }
 }
 
