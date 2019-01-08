@@ -1,0 +1,41 @@
+.chat-container {
+  padding: 20px;
+  width: 800px;
+  border: 1px solid black;
+  height: 600px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+}
+
+.chat-container ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.chat-container ul li {
+  //border: 1px solid #555;
+  height: 35px;
+  padding: 5px;
+  box-sizing: border-box;
+}
+
+.chat-container ul li.my-message {
+  text-align: left;
+}
+
+.chat-container ul li.others-message {
+  text-align: right;
+}
+
+.chat-container ul li span {
+  display: inline-block;
+  padding: 5px;
+  background-color: aqua;
+}
+
+.chat-container ul li.my-message span {
+  background-color: antiquewhite;
+
+}
