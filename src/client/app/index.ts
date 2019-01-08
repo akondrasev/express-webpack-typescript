@@ -3,22 +3,17 @@ import * as ngMaterial from 'angular-material';
 import 'angular-messages';
 import '@uirouter/angularjs';
 import {ICompileProvider, ILocationProvider} from "angular";
+import ngConstants from './constants/index';
 import viewComponents from "./components/index";
-import * as io from 'socket.io-client';
-import Socket = SocketIOClient.Socket;
 import services from './services/index';
-
-const socket: Socket = io({
-    autoConnect: false,
-    secure: true
-});
 
 const requires: Array<string> = [
     ngMaterial,
     "ui.router",
     viewComponents,
     "ngMessages",
-    services
+    services,
+    ngConstants
 ];
 
 angular.module("app", requires).config(["$compileProvider", "$locationProvider", "$mdThemingProvider", ($compileProvider: ICompileProvider, $locationProvider: ILocationProvider, $mdThemingProvider: angular.material.IThemingProvider) => {
@@ -34,8 +29,8 @@ angular.module("app", requires).config(["$compileProvider", "$locationProvider",
     $mdThemingProvider.theme('default')
         .primaryPalette('teal')
         .accentPalette('orange');
-}]).run([() => {
-    socket.connect();
+}]).run(["$mdTheming", ($mdTheming: angular.material.IThemingService) => {
+
 }]);
 
 

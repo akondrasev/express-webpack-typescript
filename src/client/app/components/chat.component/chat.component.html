@@ -1,5 +1,31 @@
 <div class="chat-component">
-    Chat here
+    <div>
+        <h1>Chat</h1>
+    </div>
+    <div class="chat-container">
+        <div class="messages-container">
+            <ul>
+                <li class="my-message">
+                    <span>
+                        Text
+                    </span>
+                </li>
+                <li class="others-message">
+                    <span>
+                        Resonse
+                    </span>
+                </li>
+            </ul>
+        </div>
+        <div>
+            <form name="messageForm" ng-submit="$ctrl.submitMessage();">
+                <input name="message" ng-model="$ctrl.message"/>
+            </form>
+
+        </div>
+    </div>
+
+    <br/>
 
     <md-button class="md-raised md-primary" ng-click="$ctrl.logout();">Logout</md-button>
 </div>

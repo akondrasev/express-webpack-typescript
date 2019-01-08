@@ -2,17 +2,25 @@ import * as angular from 'angular';
 import './chat.component.scss';
 import {StateProvider, StateService} from "@uirouter/angularjs";
 import {AuthService} from "../../services/auth.service";
+import Socket = SocketIOClient.Socket;
 
 class ChatComponent {
-    static $inject: Array<string> = ["authService", "$state"];
+    static $inject: Array<string> = ["authService", "$state", "socket"];
 
-    constructor(private authService: AuthService, private $state: StateService) {
+    private message:string = "";
+
+    constructor(private authService: AuthService, private $state: StateService, private socket: Socket) {
     }
 
     logout() {
         this.authService.logout().then(() => {
             this.$state.go("login");
         });
+    }
+
+    submitMessage() {
+        this.socket.send(this.message);
+        this.message = "";
     }
 }
 

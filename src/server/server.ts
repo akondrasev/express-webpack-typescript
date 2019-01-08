@@ -13,14 +13,21 @@ import {Request, Response} from "express-serve-static-core";
 import * as session from 'express-session';
 import * as bodyParser from "body-parser";
 
-const MongoDBStore = require('connect-mongodb-session')(session);
-
-const store = new MongoDBStore({
-    uri: 'mongodb://localhost:27017/app',
-    collection: 'sessions'
-});
-
 declare let compile: any;
+
+let sessionStore = null;//will use in memory by default
+
+if (compile.isProduction) {
+    const mongoDbConnect = require('connect-mongodb-session');
+
+    const MongoDBStore = mongoDbConnect(session);
+
+    sessionStore = new MongoDBStore({
+        uri: 'mongodb://localhost:27017/app',
+        collection: 'sessions'
+    });
+}
+
 
 const config = clientConfig(false);
 
@@ -33,7 +40,7 @@ app.use(session({
     cookie: {
         maxAge: 1000 * 60 * 60 * 24 * 7 // 1 week
     },
-    store: store,
+    store: sessionStore,
     resave: false,
     saveUninitialized: false
 }));
