@@ -3,7 +3,7 @@ import * as express from 'express';
 import * as webpack from 'webpack';
 import * as webpackDevMiddleware from 'webpack-dev-middleware';
 import * as webpackHotMiddleware from 'webpack-hot-middleware';
-import * as clientConfig from '../../webpack.config.js';
+import * as clientWebpackConfig from '../../webpack.config.js';
 import * as https from 'https';
 import * as http from 'http';
 import * as fs from 'fs';
@@ -13,8 +13,11 @@ import {Request, Response} from "express-serve-static-core";
 import * as session from 'express-session';
 import * as bodyParser from "body-parser";
 
-declare let compile: any;
+declare let compile: {
+    isProduction: boolean
+};
 
+let useSecure = true;
 let sessionStore = null;//will use in memory by default
 
 if (compile.isProduction) {
@@ -28,97 +31,100 @@ if (compile.isProduction) {
     });
 }
 
+run(useSecure);
 
-const config = clientConfig(false);
+function run(useSecure) {
+    const expressApp = express();
 
-const app = express();
-
-const clientAppRoute = "*";
-
-app.use(session({
-    secret: 'grabAndGo',
-    cookie: {
-        maxAge: 1000 * 60 * 60 * 24 * 7 // 1 week
-    },
-    store: sessionStore,
-    resave: false,
-    saveUninitialized: false
-}));
-
-// parse application/x-www-form-urlencoded
-app.use(bodyParser.urlencoded({extended: false}));
-
-// parse application/json
-app.use(bodyParser.json());
-
-app.use("/api", api);
-
-if (!compile.isProduction) {
-    const compiler = webpack(config as webpack.Configuration);
-
-    app.use(webpackDevMiddleware(compiler, {
-        publicPath: config.output.publicPath
+    expressApp.use(session({
+        secret: 'grabAndGo',
+        cookie: {
+            maxAge: 1000 * 60 * 60 * 24 * 7 // 1 week
+        },
+        store: sessionStore,
+        resave: false,
+        saveUninitialized: false
     }));
 
-    app.use(webpackHotMiddleware(compiler));
+    expressApp.use(bodyParser.urlencoded({extended: false}));
+    expressApp.use(bodyParser.json());
+    expressApp.use("/api", api);
 
-    app.get(clientAppRoute, (req, res, next) => {
-        const filename = path.join(compiler.options.output.path, 'index.html');
+    if (!compile.isProduction) {
+        const config = clientWebpackConfig(false) as webpack.Configuration;
 
-        // @ts-ignore
-        compiler.outputFileSystem.readFile(filename, (err, result) => {
-            if (err) {
-                console.log("error reading file", filename);
-                res.end(`error reading file from ${filename}`);
-                return;
-            }
+        const compiler = webpack(config);
 
-            res.set('content-type', 'text/html');
-            res.send(result);
-            res.end();
+        expressApp.use(webpackDevMiddleware(compiler, {
+            publicPath: config.output.publicPath
+        }));
+
+        expressApp.use(webpackHotMiddleware(compiler));
+
+        expressApp.get("*", (req, res, next) => {
+            const filename = path.join(compiler.options.output.path, 'index.html');
+
+            // @ts-ignore
+            compiler.outputFileSystem.readFile(filename, (err, result) => {
+                if (err) {
+                    console.log("error reading file", filename);
+                    res.end(`error reading file from ${filename}`);
+                    return;
+                }
+
+                res.set('content-type', 'text/html');
+                res.send(result);
+                res.end();
+            });
+
+        });
+    } else {
+        const CLIENT_DIR = `${__dirname}/../client`,
+            HTML_FILE = path.join(CLIENT_DIR, 'index.html');
+
+        expressApp.use(express.static(CLIENT_DIR));
+
+        expressApp.get("*", (req, res, next) => {
+            res.sendFile(HTML_FILE);
+        });
+    }
+
+    let server = useSecure ? https.createServer({
+        key: fs.readFileSync('server.key'),
+        cert: fs.readFileSync('server.cert')
+    }, expressApp) : new http.Server(expressApp);
+
+    const port = useSecure ? 443 : 80;
+
+    server.listen(port, () => {
+        console.log(`App listening to ${port}....`);
+        console.log('Press Ctrl+C to quit.');
+    });
+
+    if (useSecure) {
+        const httpApp = express();
+        const httpServer = new http.Server(httpApp);
+
+        httpApp.get('*', function (req: Request, res: Response) {
+            const url = `https://${req.hostname}${req.url}`;
+            console.log("redirect to: ", url);
+            res.redirect(url);
+        });
+        httpServer.listen(80);
+    }
+
+    const io = socketIo(server);
+
+    io.on('connection', function (socket) {
+        console.log('a user connected');
+
+        socket.on('push', function (data) {
+            console.log('push received, emitting a pop', data);
+            socket.emit('pop', {hello: 'world'});
         });
 
-    });
-} else {
-    const CLIENT_DIR = `${__dirname}/../client`,
-        HTML_FILE = path.join(CLIENT_DIR, 'index.html');
-
-    app.use(express.static(CLIENT_DIR));
-
-    app.get(clientAppRoute, (req, res, next) => {
-        res.sendFile(HTML_FILE);
+        socket.on('disconnect', function () {
+            console.log('user disconnected');
+        });
     });
 }
-
-const PORT = process.env.PORT || 80;
-
-const httpApp = express();
-const httpServer = new http.Server(httpApp);
-
-httpApp.get('*', function (req: Request, res: Response) {
-    const url = `https://${req.hostname}${req.url}`;
-    console.log("redirect to: ", url);
-    res.redirect(url);
-});
-
-const httpsServer = https.createServer({
-    key: fs.readFileSync('server.key'),
-    cert: fs.readFileSync('server.cert')
-}, app);
-
-httpServer.listen(PORT);
-
-httpsServer.listen(443, () => {
-    console.log(`App listening to ${443}....`);
-    console.log('Press Ctrl+C to quit.');
-});
-
-const io = socketIo(httpsServer);
-
-io.on('connection', function (socket) {
-    console.log('a user connected');
-
-    socket.on('disconnect', function () {
-        console.log('user disconnected');
-    });
-});

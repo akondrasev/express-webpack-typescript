@@ -3,8 +3,7 @@ import * as io from 'socket.io-client';
 import Socket = SocketIOClient.Socket;
 
 const socket: Socket = io({
-    autoConnect: false,
-    secure: true
+    autoConnect: false
 });
 
 
