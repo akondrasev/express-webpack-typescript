@@ -7,9 +7,12 @@ import Socket = SocketIOClient.Socket;
 class ChatComponent {
     static $inject: Array<string> = ["authService", "$state", "socket"];
 
-    private message:string = "";
+    private message: string = "";
 
     constructor(private authService: AuthService, private $state: StateService, private socket: Socket) {
+        socket.on("pop", (data) => {
+            console.log(data);
+        });
     }
 
     logout() {
@@ -19,7 +22,7 @@ class ChatComponent {
     }
 
     submitMessage() {
-        this.socket.send(this.message);
+        this.socket.emit("push", this.message);
         this.message = "";
     }
 }
