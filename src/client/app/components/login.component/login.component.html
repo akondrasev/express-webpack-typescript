@@ -7,7 +7,7 @@
             </div>
         </md-toolbar>
         <md-card-content>
-            <form name="loginForm">
+            <form name="loginForm" ng-submit="$ctrl.login();">
                 <md-input-container class="md-block" flex-gt-sm>
                     <label>Email</label>
                     <input required name="email" ng-model="$ctrl.email" minlength="10" maxlength="100" ng-pattern="/^.+@.+\..+$/"/>
@@ -28,7 +28,7 @@
                     </div>
                 </md-input-container>
 
-                <md-button ng-disabled="!loginForm.$valid" class="md-raised md-primary" ng-click="$ctrl.login();">Log In</md-button>
+                <md-button type="submit" ng-disabled="!loginForm.$valid" class="md-raised md-primary">Log In</md-button>
                 <md-button class="md-raised">Sign Up</md-button>
             </form>
         </md-card-content>
