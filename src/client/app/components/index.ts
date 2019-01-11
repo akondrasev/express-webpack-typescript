@@ -11,6 +11,12 @@ export default angular.module("viewComponents", [
     loginComponent, chatComponent, error404Component
 ]).run(["$rootScope", "$state", "$transitions", "$urlService", "authService", ($rootScope: IRootScopeService, $state: StateService, $transitions: TransitionService, $urlService: UrlService, authService: AuthService) => {
     $urlService.rules.otherwise((matchValue?: any, url?: UrlParts, router?: UIRouter) => {
+        if (url.path === "/") {
+            return {
+                state: "chat"
+            };
+        }
+
         return {
             state: "error404"
         };
@@ -18,7 +24,7 @@ export default angular.module("viewComponents", [
 
     let redirected = false;
 
-    $transitions.onBefore({to: (state) => state.name !== "login"}, (transition: Transition):HookResult => {
+    $transitions.onBefore({to: (state) => state.name !== "login" && state.name !== "error404"}, (transition: Transition):HookResult => {
         return new Promise((resolve, reject) => {
             authService.isAuthorized().then(() => {
                 resolve();
