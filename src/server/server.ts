@@ -3,7 +3,7 @@ import * as express from 'express';
 import * as webpack from 'webpack';
 import * as webpackDevMiddleware from 'webpack-dev-middleware';
 import * as webpackHotMiddleware from 'webpack-hot-middleware';
-import * as clientConfig from '../../webpack.config.js';
+import * as config from '../../webpack.config.js';
 import * as https from 'https';
 import * as http from 'http';
 import * as fs from 'fs';
@@ -11,8 +11,6 @@ import api from "./api/index";
 import {Request, Response} from "express-serve-static-core";
 
 declare let compile: any;
-
-const config = clientConfig(false);
 
 const app = express(),
     CLIENT_DIR = `${__dirname}/../client`,
