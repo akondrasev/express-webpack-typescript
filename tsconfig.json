@@ -8,6 +8,6 @@
 //    "allowSyntheticDefaultImports": true,
     "moduleResolution": "node",
     "esModuleInterop": false,
-    "lib": ["es2018"]
+    "lib": ["es2018", "dom"]
   }
 }

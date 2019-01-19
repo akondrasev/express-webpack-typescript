@@ -1,9 +1,7 @@
 <!DOCTYPE html>
-<html lang="en" ng-app="app">
+<html lang="en">
 <head>
     <meta charset="utf-8">
-    <meta name="google-signin-client_id" content="254895727822-mhgm2s8g2rvvgio9rk4en99unsk37o00.apps.googleusercontent.com">
-
     <title>Chat application</title>
     <link rel="shortcut icon" href="#">
     <base href="/">
@@ -11,18 +9,6 @@
 <body>
 <ui-view></ui-view>
 
-<script src="https://apis.google.com/js/platform.js?onload=init" async defer></script>
-
-<script>
-    function init() {
-        gapi.load('auth2', function() {
-            gapi.auth2.init({
-                client_id: "254895727822-mhgm2s8g2rvvgio9rk4en99unsk37o00.apps.googleusercontent.com",
-                scope: 'profile'
-            });
-        });
-    }
-</script>
-
+<script src="https://apis.google.com/js/platform.js"></script>
 </body>
 </html>

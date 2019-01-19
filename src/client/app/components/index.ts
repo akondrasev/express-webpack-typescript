@@ -4,7 +4,7 @@ import chatComponent from './chat.component/chat.component';
 import error404Component from './error404.component/error404.component'
 import {IRootScopeService} from "angular";
 import {AuthService} from "../services/auth.service";
-import {StateService, TransitionService, Transition, UrlService, HookResult, UrlParts, UIRouter, UrlRule} from "@uirouter/angularjs";
+import {StateService, TransitionService, Transition, UrlService, HookResult, UrlParts, UIRouter} from "@uirouter/angularjs";
 
 
 export default angular.module("viewComponents", [

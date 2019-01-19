@@ -1,6 +1,6 @@
 import * as angular from 'angular';
 import './error404.component.scss';
-import {StateProvider, StateService} from "@uirouter/angularjs";
+import {StateProvider} from "@uirouter/angularjs";
 
 class Error404Component {
     static $inject: Array<string> = [];
