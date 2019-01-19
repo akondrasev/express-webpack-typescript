@@ -3,7 +3,7 @@ import * as express from 'express';
 import * as webpack from 'webpack';
 import * as webpackDevMiddleware from 'webpack-dev-middleware';
 import * as webpackHotMiddleware from 'webpack-hot-middleware';
-import * as clientWebpackConfig from '../../webpack.config.js';
+import * as config from '../../webpack.config.js';
 import * as https from 'https';
 import * as http from 'http';
 import * as fs from 'fs';
@@ -51,9 +51,7 @@ function run(useSecure) {
     expressApp.use("/api", api);
 
     if (!compile.isProduction) {
-        const config = clientWebpackConfig(false) as webpack.Configuration;
-
-        const compiler = webpack(config);
+        const compiler = webpack(config as webpack.Configuration);
 
         expressApp.use(webpackDevMiddleware(compiler, {
             publicPath: config.output.publicPath
