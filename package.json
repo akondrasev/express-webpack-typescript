@@ -25,6 +25,7 @@
     "angular": "^1.7.5",
     "angular-animate": "^1.7.5",
     "angular-aria": "^1.7.5",
+    "angular-google-gapi": "^1.0.1",
     "angular-material": "^1.1.11",
     "angular-messages": "^1.7.5",
     "body-parser": "^1.18.3",

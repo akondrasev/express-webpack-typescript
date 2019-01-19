@@ -6,6 +6,9 @@ import {ICompileProvider, ILocationProvider} from "angular";
 import ngConstants from './constants/index';
 import viewComponents from "./components/index";
 import services from './services/index';
+import gapi from 'angular-google-gapi';
+
+console.log("gapi: ", gapi)
 
 const requires: Array<string> = [
     ngMaterial,
@@ -13,7 +16,8 @@ const requires: Array<string> = [
     viewComponents,
     "ngMessages",
     services,
-    ngConstants
+    ngConstants,
+    'angular-google-gapi'
 ];
 
 angular.module("app", requires).config(["$compileProvider", "$locationProvider", "$mdThemingProvider", ($compileProvider: ICompileProvider, $locationProvider: ILocationProvider, $mdThemingProvider: angular.material.IThemingProvider) => {
