@@ -81,7 +81,12 @@ const config = {
                 use: isProduction ? [MiniCssExtractPlugin.loader, 'css-loader'] : ['style-loader', 'css-loader']
             },
             {
-                test: /\.scss|\.sass$/,
+                test: /\.scss$/,
+                exclude: /\.component\.scss/,
+                use: isProduction ? [MiniCssExtractPlugin.loader, 'css-loader', "sass-loader"] : ['style-loader', 'css-loader', "sass-loader"]
+            },
+            {
+                test: /\.component\.scss$/,
                 use: [
                     "raw-loader", // creates style nodes from JS strings
                     "css-loader", // translates CSS into CommonJS

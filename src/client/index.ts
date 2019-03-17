@@ -1,7 +1,7 @@
 import './app/index';
 import 'cookieconsent';
 import 'cookieconsent/build/cookieconsent.min.css';
-import './css/style.css';
+import './styles.scss'
 import './polyfills';
 import './main';
 
