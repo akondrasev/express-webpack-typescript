@@ -68,7 +68,7 @@ const config = {
                 use: [
                     {
                         loader: "html-loader",
-                        options: {minimize: isProduction}
+                        options: {minimize: false}
                     }
                 ]
             },
