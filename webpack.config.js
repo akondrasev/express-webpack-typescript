@@ -60,7 +60,7 @@ const config = {
             },
             {
                 test: /\.tsx?$/,
-                use: 'ts-loader',
+                use: ['ts-loader', 'angular2-template-loader'],
                 exclude: /node_modules/
             },
             {
@@ -80,6 +80,14 @@ const config = {
                 test: /\.css$/,
                 use: isProduction ? [MiniCssExtractPlugin.loader, 'css-loader'] : ['style-loader', 'css-loader']
             },
+            {
+                test: /\.scss|\.sass$/,
+                use: [
+                    "raw-loader", // creates style nodes from JS strings
+                    "css-loader", // translates CSS into CommonJS
+                    "sass-loader" // compiles Sass to CSS, using Node Sass by default
+                ]
+            }
         ]
     },
     plugins: plugins,
