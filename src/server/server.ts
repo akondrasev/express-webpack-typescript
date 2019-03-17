@@ -1,16 +1,16 @@
-import path from 'path';
-import express from 'express';
-import webpack from 'webpack';
-import webpackDevMiddleware from 'webpack-dev-middleware';
-import webpackHotMiddleware from 'webpack-hot-middleware';
-import clientConfig from '../../webpack.config.js';
-import http from 'http';
-import socketIo from 'socket.io';
+import * as path from 'path';
+import * as express from 'express';
+import * as webpack from 'webpack';
+import * as webpackDevMiddleware from 'webpack-dev-middleware';
+import * as webpackHotMiddleware from 'webpack-hot-middleware';
+import * as config from '../../webpack.config.js';
+import * as https from 'https';
+import * as http from 'http';
+import * as fs from 'fs';
 import api from "./api/index";
+import {Request, Response} from "express-serve-static-core";
 
-declare let compile:any;
-
-const config = clientConfig(false);
+declare let compile: any;
 
 const app = express(),
     CLIENT_DIR = `${__dirname}/../client`,
@@ -41,24 +41,31 @@ if (!compile.isProduction) {
     app.get('/', (req, res, next) => {
         res.sendFile(HTML_FILE);
     });
+
+    app.use(express.static(CLIENT_DIR));
 }
 
 app.use("/api", api);
 
 const PORT = process.env.PORT || 8080;
 
-const server = new http.Server(app);
-const io = socketIo(server);
+const httpApp = express();
+const httpServer = new http.Server(httpApp);
 
-io.on('connection', function(socket){
-    console.log('a user connected');
-
-    socket.on('disconnect', function(){
-        console.log('user disconnected');
-    });
+httpApp.get('*', function (req: Request, res: Response) {
+    const url = `https://${req.hostname}${req.url}`;
+    console.log("redirect to: ", url);
+    res.redirect(url);
 });
 
-server.listen(PORT, () => {
+const httpsServer = https.createServer({
+    key: fs.readFileSync('server.key'),
+    cert: fs.readFileSync('server.cert')
+}, app);
+
+httpServer.listen(PORT);
+
+httpsServer.listen(443, () => {
     console.log(`App listening to ${PORT}....`);
     console.log('Press Ctrl+C to quit.');
 });
