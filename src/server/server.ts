@@ -20,7 +20,8 @@ if (!compile.isProduction) {
     const compiler = webpack(config as webpack.Configuration);
 
     app.use(webpackDevMiddleware(compiler, {
-        publicPath: config.output.publicPath
+        publicPath: config.output.publicPath,
+        writeToDisk: true
     }));
 
     app.use(webpackHotMiddleware(compiler));
