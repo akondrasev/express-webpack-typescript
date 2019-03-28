@@ -64,9 +64,11 @@ const httpsServer = https.createServer({
     cert: fs.readFileSync('server.cert')
 }, app);
 
-httpServer.listen(PORT);
+httpServer.listen(PORT, () => {
+    console.log(`Http app listening to ${PORT}....`);
+});
 
 httpsServer.listen(443, () => {
-    console.log(`App listening to ${PORT}....`);
+    console.log(`Https app listening to 443....`);
     console.log('Press Ctrl+C to quit.');
 });
